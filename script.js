@@ -103,6 +103,7 @@ const zoomInBtn = document.getElementById("zoomInBtn");
 const zoomValue = document.getElementById("zoomValue");
 const fontDecreaseBtn = document.getElementById("fontDecreaseBtn");
 const fontIncreaseBtn = document.getElementById("fontIncreaseBtn");
+const liveToggleCaptionsBtn = document.getElementById("liveToggleCaptionsBtn");
 const fontValue = document.getElementById("fontValue");
 const downloadBtn = document.getElementById("downloadBtn");
 const downloadPdfContextBtn = document.getElementById("downloadPdfContextBtn");
@@ -11414,7 +11415,7 @@ function drawCinematicCaptions() {
 
   const chunk = timeline.slice(chunkStart, chunkEnd + 1);
 
-  const fullText = chunk.map(word => word.text.replace(/[\[\]]/g, '')).join(' ');
+  const fullText = chunk.map(word => (word.text || '').replace(/[\[\]]/g, '')).join(' ');
   const localActiveIndex = (activeIndex >= chunkStart && activeIndex <= chunkEnd) ? activeIndex - chunkStart : -1;
   const elapsed = Math.max(0, (currentMs - chunk[0].startMs) / 1000);
 
@@ -17722,6 +17723,25 @@ fontDecreaseBtn.addEventListener("click", () => {
 fontIncreaseBtn.addEventListener("click", () => {
   setFontScale(state.fontScale + FONT_SCALE_STEP);
 });
+
+if (liveToggleCaptionsBtn && proCaptionsEnabled) {
+  const updateToggleStyle = () => {
+      liveToggleCaptionsBtn.textContent = proCaptionsEnabled.checked ? "CC" : "CC (Off)";
+      if (proCaptionsEnabled.checked) {
+          liveToggleCaptionsBtn.classList.add("primary-btn");
+          liveToggleCaptionsBtn.classList.remove("ghost-btn");
+      } else {
+          liveToggleCaptionsBtn.classList.add("ghost-btn");
+          liveToggleCaptionsBtn.classList.remove("primary-btn");
+      }
+  };
+  updateToggleStyle();
+  liveToggleCaptionsBtn.addEventListener("click", () => {
+      proCaptionsEnabled.checked = !proCaptionsEnabled.checked;
+      updateToggleStyle();
+  });
+}
+
 stageBoldBtn.addEventListener("click", () => {
   updateDisplayStyle({ bold: !state.displayStyle.bold });
 });
