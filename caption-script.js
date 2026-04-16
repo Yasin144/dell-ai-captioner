@@ -677,7 +677,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const fontFamily = fontSelect ? fontSelect.value : 'Nunito, sans-serif';
             ctx.font = `900 ${fontSize}px ${fontFamily}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
             
-            drawWrappedText(ctx, currentChunk.text.trim(), renderCanvas.width * 0.5, renderCanvas.height * 0.8, maxWidth, lineHeight, time - currentChunk.timestamp[0], styleSelect.value, activeWordIndex, targetEmoji, fontSize, currentChunk.colorOverride);
+            drawWrappedText(ctx, currentChunk.text.trim(), renderCanvas.width * captionPosX, renderCanvas.height * captionPosY, maxWidth, lineHeight, time - currentChunk.timestamp[0], styleSelect.value, activeWordIndex, targetEmoji, fontSize, currentChunk.colorOverride);
           } else {
             let useMusic = bgMusicAudio && !bgMusicAudio.paused;
             if (bgMusicCheck && !bgMusicCheck.checked) useMusic = false;
