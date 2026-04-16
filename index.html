@@ -1,0 +1,1278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>Maths Teacher</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=League+Spartan:wght@400;600;700;800&family=Nunito:wght@500;700;800&display=swap" rel="stylesheet">
+  <script>
+    (function loadLatestStylesheet() {
+      const cacheToken = Date.now().toString();
+      const styleLink = document.createElement("link");
+      styleLink.rel = "stylesheet";
+      styleLink.href = "styles.css?v=" + cacheToken;
+      document.head.appendChild(styleLink);
+    }());
+  </script>
+</head>
+<body>
+  <main class="app-shell">
+    <section class="panel panel-input" id="inputPanel">
+      <div class="panel-head">
+        <div class="panel-copy">
+          <p class="eyebrow">Maths Teacher</p>
+          <h1>Maths lessons that auto-speak in Anjali's voice</h1>
+          <p class="subcopy">
+            Type or paste your lesson once. The maths output, Anjali narration, and presentation screen update
+            automatically with a slower, smoother classroom feel.
+          </p>
+        </div>
+
+        <div class="theme-card hero-stage-card">
+          <div class="hero-stage-topbar">
+            <p class="hero-stage-note">Classroom board style</p>
+            <div class="hero-stage-actions">
+              <button id="showScreenBtn" class="primary-btn input-show-screen-btn hero-show-screen-btn" type="button">Show Screen</button>
+              <label class="theme-toggle theme-toggle-standalone" for="themeToggle" title="Toggle day and dark theme">
+                <input id="themeToggle" class="theme-toggle-input" type="checkbox" aria-label="Toggle dark mode">
+                <span class="theme-toggle-track">
+                  <span class="theme-toggle-thumb"></span>
+                </span>
+              </label>
+            </div>
+          </div>
+          <strong id="themeModeLabel" class="theme-value theme-value-hidden">Day Theme</strong>
+          <select id="themeSelect" class="theme-select hidden" aria-label="Choose theme">
+            <option value="light">Light Mode</option>
+            <option value="dark">Dark Mode</option>
+          </select>
+        </div>
+      </div>
+
+      <section class="workflow-surface" aria-label="Lesson workflow">
+        <div class="workflow-story">
+          <p class="workflow-eyebrow">Workflow</p>
+          <h2 class="workflow-title">Build the lesson once, then open the screen when everything feels ready.</h2>
+          <p class="workflow-copy">
+            Keep your current working logic safe. This layout simply organizes the flow into a clearer order:
+            write the lesson, optionally pick a screen template, add support tools only when needed, then show
+            the presentation.
+          </p>
+        </div>
+        <div class="workflow-lane" role="list" aria-label="Workflow steps">
+          <button class="workflow-step" type="button" data-workflow-target="lessonContentSection">
+            <span class="workflow-step-index">01</span>
+            <span class="workflow-step-copy">
+              <strong>Lesson Input</strong>
+              <span>Write, translate, and style the maths content.</span>
+            </span>
+          </button>
+          <button class="workflow-step" type="button" data-workflow-target="templateWorkflowSection">
+            <span class="workflow-step-index">02</span>
+            <span class="workflow-step-copy">
+              <strong>Template</strong>
+              <span>Optional. Keep Classic or switch the stage look.</span>
+            </span>
+          </button>
+          <button class="workflow-step" type="button" data-workflow-target="mediaSection">
+            <span class="workflow-step-index">03</span>
+            <span class="workflow-step-copy">
+              <strong>Media And Voice</strong>
+              <span>Add intro, images, and Anjali narration only if needed.</span>
+            </span>
+          </button>
+          <button class="workflow-step workflow-step-show" type="button" data-workflow-target="showScreenBtn">
+            <span class="workflow-step-index">04</span>
+            <span class="workflow-step-copy">
+              <strong>Show Screen</strong>
+              <span>Open the presentation when the lesson is ready to present.</span>
+            </span>
+          </button>
+        </div>
+      </section>
+
+      <details class="section-card template-section-card" id="templateWorkflowSection" open>
+        <summary class="section-summary">
+          <span class="summary-head">
+            <span class="section-icon">TPL</span>
+            <span class="summary-copy">
+              <span class="section-title">Presentation Template</span>
+              <span class="section-meta">Optional. The Classic stage stays as the default until you choose another template.</span>
+            </span>
+          </span>
+        </summary>
+        <div class="section-content">
+          <div class="template-section-shell">
+            <div class="template-section-copy">
+              <p class="upload-copy">
+                Pick a screen look before you open the presentation. If you do nothing, the current Classic blue
+                teaching board remains active and all existing workflows continue exactly as they do now.
+              </p>
+              <p class="upload-copy" id="presentationTemplateStatus">Classic stage is active by default.</p>
+            </div>
+            <div class="template-gallery" role="radiogroup" aria-label="Presentation template choices">
+              <label class="template-card" for="presentationTemplateClassic">
+                <input id="presentationTemplateClassic" class="template-radio" type="radio" name="presentationTemplate" value="classic" checked>
+                <span class="template-card-preview template-card-preview-classic" aria-hidden="true">
+                  <span class="template-preview-classic-rings"></span>
+                  <span class="template-preview-classic-card"></span>
+                </span>
+                <span class="template-card-body">
+                  <span class="template-card-title-row">
+                    <strong>Classic Stage</strong>
+                    <span class="template-chip">Default</span>
+                  </span>
+                  <span class="template-card-copy">Keep the current blue classroom board with the familiar layout and working behavior.</span>
+                </span>
+              </label>
+
+              <label class="template-card" for="presentationTemplateOutcomes">
+                <input id="presentationTemplateOutcomes" class="template-radio" type="radio" name="presentationTemplate" value="learning-outcomes">
+                <span class="template-card-preview template-card-preview-outcomes" aria-hidden="true">
+                  <span class="template-preview-outcomes-header">LEARNING OUTCOMES</span>
+                  <span class="template-preview-outcomes-logo">Info kids</span>
+                </span>
+                <span class="template-card-body">
+                  <span class="template-card-title-row">
+                    <strong>Learning Outcomes</strong>
+                    <span class="template-chip template-chip-optional">Optional</span>
+                  </span>
+                  <span class="template-card-copy">Use a cleaner classroom poster look with a white title strip and soft teaching board body.</span>
+                </span>
+              </label>
+            </div>
+            <div class="template-section-copy" style="margin-top: 24px;">
+              <label class="style-field" for="outcomesTitleInput">
+                <span class="style-label">Custom Template Title</span>
+                <input id="outcomesTitleInput" class="text-field-input" type="text" placeholder="LEARNING OUTCOMES" disabled>
+              </label>
+              <div class="toolbar toolbar-compact" style="margin-top: 12px;">
+                <button id="saveOutcomesTitleBtn" class="primary-btn" type="button" disabled>Save Custom Title</button>
+              </div>
+              <p class="upload-copy" id="outcomesTitleStatus" style="margin-top: 8px;">Switch to Learning Outcomes to save a custom title.</p>
+            </div>
+          </div>
+        </div>
+      </details>
+
+      <details class="section-card agent-section-card" id="agentSection" open>
+        <summary class="section-summary">
+          <span class="summary-head">
+            <span class="section-icon">AI</span>
+            <span class="summary-copy">
+              <span class="section-title">Autonomous Brain</span>
+              <span class="section-meta">Provide a topic. The AI agent will think, structure the lesson, and auto-present.</span>
+            </span>
+          </span>
+        </summary>
+        <div class="section-content">
+          <div class="tool-card">
+            <div class="tool-card-head">
+              <span class="module-icon">🧠</span>
+              <p class="tool-card-title">LLM Presenter Agent</p>
+            </div>
+            <p class="upload-copy">Configure your agent and let it take over your presentation flow.</p>
+            <div class="display-style-grid" style="margin-bottom: 12px;">
+              <label class="style-field" for="localLlmUrlInput">
+                <span class="style-label">Local LLM Server (Ollama)</span>
+                <input id="localLlmUrlInput" class="text-field-input" type="text" value="http://127.0.0.1:11434">
+              </label>
+              <label class="style-field" for="localLlmModelInput">
+                <span class="style-label">Model Name</span>
+                <input id="localLlmModelInput" class="text-field-input" type="text" value="llama3">
+              </label>
+            </div>
+            <label class="field-label" for="agentPromptInput">What should the agent explain?</label>
+            <textarea
+              id="agentPromptInput"
+              class="lesson-input"
+              style="min-height: 80px;"
+              placeholder="e.g. Explain how the solar system works to 5th graders."
+            ></textarea>
+            <div class="toolbar toolbar-compact">
+              <button id="agentRunBtn" class="primary-btn" type="button">Think & Auto-Present</button>
+            </div>
+            <div id="agentLoadingIndicator" class="progress-indicator hidden" style="margin-top: 12px; margin-bottom: 2px;">
+              <div class="progress-track" style="background-color: rgba(96, 165, 250, 0.15);">
+                <span class="progress-fill" style="width: 100%; background-color: #60a5fa; animation: narrationLivePulse 2.4s infinite cubic-bezier(0.4, 0, 0.2, 1);"></span>
+              </div>
+            </div>
+            <p class="upload-copy" id="agentStatus" style="margin-top: 8px; color: #000000;">The agent is waiting for instructions.</p>
+          </div>
+        </div>
+      </details>
+
+      <details class="section-card" id="lessonContentSection">
+        <summary class="section-summary">
+          <span class="summary-head">
+            <span class="section-icon">TXT</span>
+            <span class="summary-copy">
+              <span class="section-title">Maths Lesson Content</span>
+              <span class="section-meta">Write the maths text that will appear on the teaching slide.</span>
+            </span>
+          </span>
+        </summary>
+        <div class="section-content">
+          <div class="tool-card maths-translator-card">
+            <div class="tool-card-head">
+              <span class="module-icon">TRN</span>
+              <p class="tool-card-title">Maths Translator</p>
+            </div>
+            <p class="upload-copy">Paste normal text here. The app converts it into pure maths notation and sends the translated result to the lesson box automatically.</p>
+            <label class="field-label" for="mathsSourceInput">Source Input</label>
+            <textarea
+              id="mathsSourceInput"
+              class="lesson-input maths-source-input"
+              placeholder="Example:
+what is two plus three
+find the product of six and four
+ten divided by two
+three is less than nine"
+            ></textarea>
+            <div class="toolbar toolbar-compact">
+              <button id="translateMathsBtn" class="primary-btn" type="button">Translate To Pure Maths</button>
+              <button id="clearMathsSourceBtn" class="ghost-btn" type="button">Clear Source</button>
+            </div>
+            <label class="toggle-check" for="mathsAutoTranslateToggle">
+              <input id="mathsAutoTranslateToggle" type="checkbox" checked>
+              <span>Auto translate source into the lesson box</span>
+            </label>
+            <div
+              id="mathsTranslateProgress"
+              class="progress-indicator maths-translate-progress hidden"
+              role="status"
+              aria-live="polite"
+            >
+              <div class="progress-track">
+                <span id="mathsTranslateProgressBar" class="progress-fill maths-translate-progress-fill"></span>
+              </div>
+              <p id="mathsTranslateProgressLabel" class="upload-copy">Translating into pure maths...</p>
+            </div>
+            <label class="field-label" for="mathsTranslationPreview">Pure Maths Translation</label>
+            <pre id="mathsTranslationPreview" class="maths-translation-preview">Pure maths translation will appear here.</pre>
+            <p class="upload-copy" id="mathsTranslatorStatus">Maths translator is ready. Paste plain text and the lesson box will receive the translated maths version.</p>
+          </div>
+          <div class="tool-card">
+            <div class="tool-card-head">
+              <span class="module-icon">TAB</span>
+              <p class="tool-card-title">Place Value Table Builder</p>
+            </div>
+            <p class="upload-copy">Enter a number, choose the table layout, and the lesson box will be filled with a ready place value chart. Supports up to 10 digits.</p>
+            <div class="display-style-grid">
+              <label class="style-field" for="placeValueNumberInput">
+                <span class="style-label">Number</span>
+                <input
+                  id="placeValueNumberInput"
+                  class="text-field-input"
+                  type="text"
+                  inputmode="numeric"
+                  maxlength="14"
+                  placeholder="Enter a number"
+                >
+              </label>
+              <label class="style-field" for="placeValueSystemSelect">
+                <span class="style-label">Table Layout</span>
+                <select id="placeValueSystemSelect" class="theme-select text-style-select" aria-label="Choose place value table layout">
+                  <option value="indian">Indian (lakhs, crores)</option>
+                  <option value="international">International (thousands, millions)</option>
+                </select>
+              </label>
+            </div>
+            <div class="toolbar toolbar-compact">
+              <button id="applyPlaceValueTableBtn" class="primary-btn" type="button">Create Table Layout</button>
+              <button id="showPlaceValueTableBtn" class="accent-btn" type="button">Create And Show Screen</button>
+            </div>
+            <p class="upload-copy" id="placeValueToolStatus">Use this builder when you want to present place value charts quickly without typing the full layout by hand.</p>
+          </div>
+          <div class="input-module-head">
+            <label class="field-label" for="lessonInput">Translated Maths Lesson</label>
+          </div>
+          <textarea
+            id="lessonInput"
+            class="lesson-input"
+            placeholder="Type or paste your lesson here"
+          ></textarea>
+          <div class="display-style-card">
+            <p class="field-label">Display Text Style</p>
+            <p class="upload-copy">Choose how the lesson text should look on the blue screen before you open it.</p>
+            <div class="display-style-grid">
+              <label class="style-field" for="textColorSelect">
+                <span class="style-label">Text Color</span>
+                <select id="textColorSelect" class="theme-select text-style-select" aria-label="Choose text color">
+                  <option value="#ffffff" selected>White</option>
+                  <option value="#000000">Black</option>
+                  <option value="#173e58">Deep Blue</option>
+                  <option value="#10243a">Dark Navy</option>
+                  <option value="#0d7ea9">Sky Blue</option>
+                  <option value="#2563eb">Blue</option>
+                  <option value="#1f5a24">Green</option>
+                  <option value="#16a34a">Bright Green</option>
+                  <option value="#dc2626">Red</option>
+                  <option value="#facc15">Yellow</option>
+                  <option value="#7a1f1f">Maroon</option>
+                </select>
+              </label>
+              <div class="style-actions" aria-label="Text style options">
+                <button id="boldToggleBtn" class="ghost-btn toggle-btn" type="button" aria-pressed="false">Bold</button>
+                <button id="italicToggleBtn" class="ghost-btn toggle-btn" type="button" aria-pressed="false">Italic</button>
+                <button id="underlineToggleBtn" class="ghost-btn toggle-btn" type="button" aria-pressed="false">Underline</button>
+              </div>
+            </div>
+            <div class="style-actions case-actions" aria-label="Text case options">
+              <button id="caseOriginalBtn" class="ghost-btn toggle-btn" type="button" aria-pressed="true">AA</button>
+              <button id="caseLowerBtn" class="ghost-btn toggle-btn" type="button" aria-pressed="false">tt</button>
+              <button id="caseTitleBtn" class="ghost-btn toggle-btn" type="button" aria-pressed="false">Tt</button>
+              <button id="caseUpperBtn" class="ghost-btn toggle-btn" type="button" aria-pressed="false">TT</button>
+            </div>
+            <p class="upload-copy">Tip: if selecting text is difficult, start a line with `#` to show that line as a bold underlined heading.</p>
+          </div>
+          <div id="selectionStyleCard" class="display-style-card">
+            <p class="field-label">Selected Text Style</p>
+            <p class="upload-copy">Selected words: <strong id="selectedKeywordLabel">None</strong></p>
+            <div class="display-style-grid">
+              <label class="style-field" for="selectedTextColorSelect">
+                <span class="style-label">Selected Text Color</span>
+                <select id="selectedTextColorSelect" class="theme-select text-style-select" aria-label="Choose selected text color">
+                  <option value="#ffffff" selected>White</option>
+                  <option value="#000000">Black</option>
+                  <option value="#173e58">Deep Blue</option>
+                  <option value="#10243a">Dark Navy</option>
+                  <option value="#0d7ea9">Sky Blue</option>
+                  <option value="#2563eb">Blue</option>
+                  <option value="#1f5a24">Green</option>
+                  <option value="#16a34a">Bright Green</option>
+                  <option value="#dc2626">Red</option>
+                  <option value="#facc15">Yellow</option>
+                  <option value="#7a1f1f">Maroon</option>
+                </select>
+              </label>
+              <div class="style-actions" aria-label="Selected text style options">
+                <button id="selectedBoldToggleBtn" class="ghost-btn toggle-btn" type="button" aria-pressed="false">Bold</button>
+                <button id="selectedItalicToggleBtn" class="ghost-btn toggle-btn" type="button" aria-pressed="false">Italic</button>
+                <button id="selectedUnderlineToggleBtn" class="ghost-btn toggle-btn" type="button" aria-pressed="false">Underline</button>
+              </div>
+            </div>
+            <div class="toolbar toolbar-compact">
+              <button id="applySelectedStyleBtn" class="primary-btn" type="button">Apply To Selected Text</button>
+              <button id="clearSelectedStyleBtn" class="ghost-btn" type="button">Clear Selected Style</button>
+            </div>
+            <p class="upload-copy" id="selectionStyleStatus">Select a word or phrase in the lesson text to give it its own look on the slide.</p>
+          </div>
+        </div>
+      </details>
+
+      <details class="section-card" id="pdfSection">
+        <summary class="section-summary">
+          <span class="summary-head">
+            <span class="section-icon">PDF</span>
+            <span class="summary-copy">
+              <span class="section-title">Upload PDF</span>
+              <span class="section-meta">Extract text from a PDF, fit it to the slide automatically, and present it.</span>
+            </span>
+          </span>
+        </summary>
+        <div class="section-content">
+          <div class="pdf-upload-grid">
+            <div class="upload-block pdf-upload-block">
+              <label class="field-label" for="pdfInput">PDF File</label>
+              <p class="upload-copy">Upload a PDF and the app will read the text from each page, place it in the lesson box, and keep the presentation layout responsive for longer documents.</p>
+              <input id="pdfInput" class="image-input" type="file" accept="application/pdf,.pdf">
+              <div class="toolbar toolbar-compact">
+                <button id="pdfShowBtn" class="primary-btn" type="button" disabled>Show Screen</button>
+                <button id="pdfPresentBtn" class="accent-btn" type="button" disabled>Read And Present Context</button>
+                <button id="clearPdfBtn" class="ghost-btn" type="button" disabled>Clear PDF</button>
+              </div>
+              <div
+                id="pdfProgress"
+                class="progress-indicator hidden"
+                role="progressbar"
+                aria-live="polite"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                aria-valuenow="0"
+              >
+                <div class="progress-track">
+                  <span id="pdfProgressBar" class="progress-fill"></span>
+                </div>
+                <p id="pdfProgressLabel" class="upload-copy">0% complete</p>
+              </div>
+              <p class="upload-copy" id="pdfStatus">No PDF selected.</p>
+              <p class="upload-copy" id="pdfPageSelectionSummary">Select a PDF to choose which pages should appear on the screen.</p>
+            </div>
+
+            <div class="tool-card pdf-preview-card">
+              <div class="tool-card-head">
+                <span class="module-icon">TXT</span>
+                <p class="tool-card-title">Extracted PDF Content</p>
+              </div>
+              <p class="upload-copy" id="pdfMeta">Upload a PDF to preview the extracted text before showing it on the slide.</p>
+              <div id="pdfPreviewList" class="pdf-preview-list hidden" aria-live="polite"></div>
+            </div>
+          </div>
+
+          <div class="tool-card pdf-pages-card">
+            <div class="tool-card-head pdf-pages-head">
+              <div class="pdf-pages-head-copy">
+                <span class="module-icon">PGS</span>
+                <p class="tool-card-title">PDF Page Picker</p>
+              </div>
+              <div class="pdf-page-bulk-actions" aria-label="PDF page bulk selection controls">
+                <button id="pdfSelectAllBtn" class="ghost-btn pdf-page-bulk-btn" type="button" disabled title="Select all PDF pages" aria-label="Select all PDF pages">&#10003; All</button>
+                <button id="pdfClearSelectionBtn" class="ghost-btn pdf-page-bulk-btn" type="button" disabled title="Deselect all PDF pages" aria-label="Deselect all PDF pages">&#10005; All</button>
+              </div>
+            </div>
+            <p class="upload-copy">Rendered page thumbnails keep the PDF layout exactly as it appears in the file. Tick only the pages you want to present.</p>
+            <div id="pdfPageList" class="pdf-page-list hidden" aria-live="polite"></div>
+          </div>
+        </div>
+      </details>
+
+      <details class="section-card" hidden>
+        <summary class="section-summary">
+          <span class="summary-head">
+            <span class="section-icon">GEN</span>
+            <span class="summary-copy">
+              <span class="section-title">Scene Generator</span>
+              <span class="section-meta">Describe the scene, optionally add images or music, and let the app prepare the best matching look.</span>
+            </span>
+          </span>
+        </summary>
+        <div class="section-content">
+          <div class="scene-generator-grid">
+            <div class="tool-card scene-generator-card">
+              <div class="tool-card-head">
+                <span class="module-icon">AI</span>
+                <p class="tool-card-title">Prompt To Scene Setup</p>
+              </div>
+              <p class="upload-copy">Write the scene idea here. The app will choose a fitting background VFX style, music mood, and export setup for the learning slide.</p>
+              <label class="style-field" for="scenePromptInput">
+                <span class="style-label">Scene Prompt</span>
+                <textarea
+                  id="scenePromptInput"
+                  class="lesson-input scene-prompt-input"
+                  placeholder="Example:
+Ocean lesson with calm bubbles, bright school style, soft background music.
+Space topic with stars, dreamy motion, and a magical learning feel."
+                ></textarea>
+              </label>
+              <div class="scene-options-grid">
+                <label class="style-field" for="sceneVfxSelect">
+                  <span class="style-label">Background VFX</span>
+                  <select id="sceneVfxSelect" class="theme-select text-style-select" aria-label="Choose scene background effect">
+                    <option value="auto">Auto</option>
+                    <option value="sparkles">Sparkles</option>
+                    <option value="bubbles">Bubbles</option>
+                    <option value="waves">Waves</option>
+                    <option value="rays">Rays</option>
+                    <option value="confetti">Confetti</option>
+                    <option value="grid">Grid</option>
+                  </select>
+                </label>
+                <label class="style-field" for="sceneMusicModeSelect">
+                  <span class="style-label">Background Music</span>
+                  <select id="sceneMusicModeSelect" class="theme-select text-style-select" aria-label="Choose scene music mode">
+                    <option value="auto">Auto Generate</option>
+                    <option value="upload">Use Uploaded Music</option>
+                    <option value="off">No Music</option>
+                  </select>
+                </label>
+                <label class="style-field" for="exportQualitySelect">
+                  <span class="style-label">Export Quality</span>
+                  <select id="exportQualitySelect" class="theme-select text-style-select" aria-label="Choose export quality">
+                    <option value="hd">HD</option>
+                    <option value="2k" selected>2K</option>
+                    <option value="4k">4K</option>
+                  </select>
+                </label>
+              </div>
+              <div class="scene-upload-grid">
+                <div class="upload-block">
+                  <label class="field-label" for="sceneImageInput">Optional Scene Images</label>
+                  <p class="upload-copy">Upload images here if you want them added to the slide gallery automatically when you generate the scene.</p>
+                  <input id="sceneImageInput" class="image-input" type="file" accept="image/*" multiple>
+                  <div id="sceneImagePreviewList" class="image-preview-list hidden" aria-live="polite"></div>
+                </div>
+                <div class="upload-block">
+                  <label class="field-label" for="sceneMusicInput">Optional Background Music</label>
+                  <p class="upload-copy">Upload your own music, or leave this empty and the app can generate a matching background loop from the prompt.</p>
+                  <input id="sceneMusicInput" class="image-input" type="file" accept="audio/*">
+                  <audio id="sceneMusicPreview" class="audio-preview hidden" controls preload="metadata"></audio>
+                  <p class="upload-copy" id="sceneMusicStatus">No background music selected.</p>
+                </div>
+              </div>
+              <div class="toolbar toolbar-compact">
+                <button id="generateSceneBtn" class="primary-btn" type="button">Generate Scene</button>
+                <button id="generateSceneShowBtn" class="accent-btn" type="button">Generate And Show</button>
+                <button id="clearSceneBtn" class="ghost-btn" type="button">Clear Scene Setup</button>
+              </div>
+              <div
+                id="sceneGenerationProgress"
+                class="progress-indicator hidden"
+                role="progressbar"
+                aria-live="polite"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                aria-valuenow="0"
+              >
+                <div class="progress-track">
+                  <span id="sceneGenerationProgressBar" class="progress-fill"></span>
+                </div>
+                <p id="sceneGenerationProgressLabel" class="upload-copy">0% complete</p>
+              </div>
+              <p class="upload-copy" id="sceneGeneratorStatus">Describe the scene and click Generate Scene. The preview on the right will update first.</p>
+            </div>
+
+            <div class="tool-card scene-preview-card">
+              <div class="tool-card-head">
+                <span class="module-icon">VFX</span>
+                <p class="tool-card-title">Scene Preview</p>
+              </div>
+              <div id="scenePreviewStage" class="scene-preview-stage" data-vfx="sparkles">
+                <div class="scene-preview-glow"></div>
+                <p id="scenePreviewLabel" class="scene-preview-label">Bright classroom style with gentle sparkles.</p>
+              </div>
+              <div class="scene-preview-chip-row">
+                <span id="sceneThemeChip" class="scene-preview-chip">Theme: Classroom</span>
+                <span id="sceneVfxChip" class="scene-preview-chip">VFX: Sparkles</span>
+                <span id="sceneMusicChip" class="scene-preview-chip">Music: Bright</span>
+                <span id="sceneExportChip" class="scene-preview-chip">Export: HD</span>
+              </div>
+              <img id="scenePreviewImage" class="scene-preview-image hidden" alt="Scene preview image">
+              <p id="scenePreviewHint" class="upload-copy">This preview shows the style that will be applied to the blue screen before you open the slide.</p>
+            </div>
+          </div>
+        </div>
+      </details>
+
+      <details class="section-card" id="serverControlsSection">
+        <summary class="section-summary">
+              <span class="summary-head">
+                <span class="section-icon">SVC</span>
+                <span class="summary-copy">
+                  <span class="section-title">Server Controls</span>
+              <span class="section-meta">Start and check the local narration, Anjali clone, transcription, and export helpers.</span>
+                </span>
+              </span>
+            </summary>
+        <div class="section-content">
+          <div class="upload-block server-block">
+            <div class="toolbar toolbar-compact">
+              <button id="startServersBtn" class="primary-btn" type="button">Start Servers</button>
+              <button id="copyStartAllBtn" class="primary-btn" type="button">Copy Start Command</button>
+              <button id="checkServersBtn" class="ghost-btn" type="button">Check Servers</button>
+            </div>
+            <div class="server-status-grid">
+              <p class="upload-copy" id="serverControlsStatus">Use Start Servers to launch the local helpers for narration, transcription, and video export.</p>
+              <p class="upload-copy" id="narrationHealthStatus">Narration server: checking...</p>
+              <p class="upload-copy" id="anjaliCloneHealthStatus">Anjali clone server: checking...</p>
+              <p class="upload-copy" id="transcribeHealthStatus">Transcription server: checking...</p>
+              <p class="upload-copy" id="videoExportHealthStatus">Video export server: checking...</p>
+              <p class="upload-copy" id="ollamaHealthStatus">Local AI (Ollama): checking...</p>
+            </div>
+          </div>
+        </div>
+      </details>
+
+      <details class="section-card" id="speechToolsSection">
+        <summary class="section-summary">
+          <span class="summary-head">
+            <span class="section-icon">MIC</span>
+            <span class="summary-copy">
+              <span class="section-title">Text And Speech Tools</span>
+              <span class="section-meta">These tools help you fill the lesson text and check the voice before showing the screen.</span>
+            </span>
+          </span>
+        </summary>
+        <div class="section-content">
+          <div class="tool-grid">
+            <div class="tool-card">
+              <div class="tool-card-head">
+                <span class="module-icon">MIC</span>
+                <p class="tool-card-title">1. Fill the lesson text by speaking</p>
+              </div>
+              <p class="upload-copy">Use this when you want to speak instead of typing.</p>
+              <div class="toolbar toolbar-compact">
+                <button id="dictateBtn" class="primary-btn" type="button">Start Dictation</button>
+                <button id="stopDictateBtn" class="ghost-btn" type="button" disabled>Stop Dictation</button>
+              </div>
+            </div>
+
+            <div class="tool-card">
+              <div class="tool-card-head">
+                <span class="module-icon">VOX</span>
+                <p class="tool-card-title">2. Hear the lesson before showing the slide</p>
+              </div>
+              <p class="upload-copy">Click Read Text to hear the latest output in Anjali voice.</p>
+              <div class="toolbar toolbar-compact">
+                <button id="previewTextBtn" class="ghost-btn" type="button">Read Text</button>
+                <button id="stopPreviewBtn" class="ghost-btn" type="button" disabled>Stop Reading</button>
+              </div>
+              <div id="previewVoiceChooser" class="voice-choice hidden" aria-live="polite">
+                <p class="upload-copy">Anjali voice is used for reading.</p>
+                <div class="toolbar toolbar-compact">
+                  <button id="previewAnjaliBtn" class="ghost-btn" type="button">Anjali Voice</button>
+                </div>
+              </div>
+              <label class="style-field" for="slideVoiceSelect">
+                <span class="style-label">Saved Slide Voice</span>
+                <select id="slideVoiceSelect" class="theme-select text-style-select" aria-label="Choose saved slide voice">
+                  <option value="anjali" selected>Anjali Narration</option>
+                </select>
+              </label>
+              <p class="upload-copy">Play Slide and Export Video use Anjali automatically.</p>
+            </div>
+          </div>
+
+          <div class="tool-card maths-helper-card">
+            <div class="tool-card-head">
+              <span class="module-icon">MTH</span>
+              <p class="tool-card-title">Maths Teacher Starter</p>
+            </div>
+            <p class="upload-copy">Load ready-made maths lessons, practise clear pronunciation, and keep Anjali's warm sample voice inside the project.</p>
+            <div class="maths-chip-row" aria-label="Maths topics">
+              <span class="maths-chip">Numbers</span>
+              <span class="maths-chip">Operations</span>
+              <span class="maths-chip">Tables</span>
+              <span class="maths-chip">Sums</span>
+              <span class="maths-chip">Shapes</span>
+              <span class="maths-chip">Pronunciation</span>
+            </div>
+            <div class="toolbar toolbar-compact maths-helper-actions">
+              <button id="loadMathsNumbersBtn" class="primary-btn" type="button">Load Numbers Lesson</button>
+              <button id="loadMathsOperationsBtn" class="ghost-btn" type="button">Load Operations Lesson</button>
+              <button id="loadMathsTablesBtn" class="ghost-btn" type="button">Load Tables 2 To 10</button>
+              <button id="loadMathsSumsBtn" class="ghost-btn" type="button">Load Mixed Sums</button>
+              <button id="loadMathsPronunciationBtn" class="ghost-btn" type="button">Load Pronunciation Practice</button>
+            </div>
+            <p class="field-label">Quick Table Boxes</p>
+            <p class="upload-copy">Tap a box to load a clean multiplication table directly into the maths lesson area.</p>
+            <div class="maths-box-layout" aria-label="Quick multiplication tables">
+              <button id="loadTable2Btn" class="maths-box-btn" type="button">
+                <span class="maths-box-title">Table Of 2</span>
+                <span class="maths-box-copy">2 x 1 to 2 x 10</span>
+              </button>
+              <button id="loadTable3Btn" class="maths-box-btn" type="button">
+                <span class="maths-box-title">Table Of 3</span>
+                <span class="maths-box-copy">3 x 1 to 3 x 10</span>
+              </button>
+              <button id="loadTable4Btn" class="maths-box-btn" type="button">
+                <span class="maths-box-title">Table Of 4</span>
+                <span class="maths-box-copy">4 x 1 to 4 x 10</span>
+              </button>
+              <button id="loadTable5Btn" class="maths-box-btn" type="button">
+                <span class="maths-box-title">Table Of 5</span>
+                <span class="maths-box-copy">5 x 1 to 5 x 10</span>
+              </button>
+              <button id="loadTable10Btn" class="maths-box-btn" type="button">
+                <span class="maths-box-title">Table Of 10</span>
+                <span class="maths-box-copy">10 x 1 to 10 x 10</span>
+              </button>
+              <button id="loadTableComboBtn" class="maths-box-btn maths-box-btn-accent" type="button">
+                <span class="maths-box-title">Tables 2 To 10</span>
+                <span class="maths-box-copy">Full classroom table practice</span>
+              </button>
+            </div>
+            <label class="field-label" for="anjaliSampleAudio">Anjali voice sample</label>
+            <p class="upload-copy">This bundled MP3 is available as a reference sample. Generated narration uses the Anjali voice flow.</p>
+            <audio id="anjaliSampleAudio" class="audio-preview" controls preload="metadata"></audio>
+            <div class="toolbar toolbar-compact">
+              <button id="useAnjaliSampleBtn" class="ghost-btn" type="button">Try Sample As Narration</button>
+            </div>
+            <p class="upload-copy" id="mathsHelperStatus">Maths practice is ready. Load starter lessons, boxed tables, mixed sums, listen to the sample, or use the sample as short narration.</p>
+          </div>
+
+          <div class="tool-status-card">
+            <div class="tool-card-head">
+              <span class="module-icon">STAT</span>
+              <p class="tool-card-title">Current Tool Status</p>
+            </div>
+            <p class="upload-copy" id="speechToolsStatus">Type normally, or use speech to text to fill the content box.</p>
+          </div>
+        </div>
+      </details>
+
+      <details class="section-card" id="audioToTextSection">
+        <summary class="section-summary">
+          <span class="summary-head">
+            <span class="section-icon">AUD</span>
+            <span class="summary-copy">
+              <span class="section-title">Upload Audio To Text</span>
+              <span class="section-meta">Choose an audio file, submit it, and watch the transcription progress.</span>
+            </span>
+          </span>
+        </summary>
+        <div class="section-content">
+          <div class="upload-block">
+            <label class="field-label" for="transcribeAudioInput">Audio File</label>
+            <p class="upload-copy">Upload an `mp3`, `wav`, or another audio file and the app will turn that speech into text in the content box.</p>
+            <input id="transcribeAudioInput" class="image-input" type="file" accept="audio/*">
+            <div class="toolbar toolbar-compact">
+              <button id="submitTranscribeBtn" class="primary-btn" type="button" disabled>Submit Audio</button>
+            </div>
+            <div
+              id="transcribeProgress"
+              class="progress-indicator hidden"
+              role="progressbar"
+              aria-live="polite"
+              aria-valuemin="0"
+              aria-valuemax="100"
+              aria-valuenow="0"
+            >
+              <div class="progress-track">
+                <span id="transcribeProgressBar" class="progress-fill"></span>
+              </div>
+              <p id="transcribeProgressLabel" class="upload-copy">0% complete</p>
+            </div>
+            <p class="upload-copy" id="transcribeStatus">No audio uploaded for transcription.</p>
+          </div>
+        </div>
+      </details>
+
+      <details class="section-card" id="aiCaptionSection">
+        <summary class="section-summary">
+          <span class="summary-head">
+            <span class="section-icon">CAP</span>
+            <span class="summary-copy">
+              <span class="section-title">AI Video Captioning (Local)</span>
+              <span class="section-meta">Automatically generate and burn animated captions onto a video directly in your browser.</span>
+            </span>
+          </span>
+        </summary>
+        <div class="section-content">
+          <div class="upload-block">
+             <label class="field-label" for="captionVideoInput">Source Video</label>
+             <p class="upload-copy">Upload an `mp4` or `webm`. The AI will extract the audio and generate TikTok-style dynamic captions completely offline.</p>
+             <input id="captionVideoInput" class="image-input" type="file" accept="video/*">
+             
+             <div class="toolbar toolbar-compact">
+                 <button id="captionActionBtn" class="primary-btn" type="button" disabled>Generate Captions</button>
+                 <button id="captionExportBtn" class="accent-btn hidden" type="button">Export Result</button>
+                 <button id="captionViralShortBtn" class="primary-btn hidden" type="button" style="background:#f90;">✂️ Export 15s Viral Short</button>
+                 <button id="captionResetBtn" class="ghost-btn hidden" type="button">Clear Video</button>
+             </div>
+
+
+             <div class="display-style-card" style="margin-top:1rem; padding: 12px; border-radius: 8px; background: rgba(0,0,0,0.1);">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 8px;">
+                    <label class="field-label" style="margin: 0;">Advanced Caption Engine Theme</label>
+                </div>
+                
+                <div style="margin-bottom: 12px; background: rgba(255,255,255,0.05); padding: 8px; border-radius: 4px; display:flex; flex-direction: column; gap: 8px;">
+                     <div style="display:flex; align-items:center; gap: 8px;">
+                         <input type="checkbox" id="captionTranslateCheck" style="width: 18px; height: 18px;">
+                         <label for="captionTranslateCheck" style="font-weight: bold; color: #fff; cursor: pointer; flex-grow:1;">🌍 Auto-Translate Audio To English</label>
+                         <p class="upload-copy" style="margin: 0;">(Checks Before Generation)</p>
+                     </div>
+                     <div style="display:flex; align-items:center; gap: 8px;">
+                         <input type="checkbox" id="captionEmojiCheck" style="width: 18px; height: 18px;" checked>
+                         <label for="captionEmojiCheck" style="font-weight: bold; color: #fff; cursor: pointer; flex-grow:1;">🪄 Inject Smart Pop-Emojis</label>
+                         <p class="upload-copy" style="margin: 0;">(Dynamic Reaction SVGs)</p>
+                     </div>
+                     <div style="display:flex; align-items:center; gap: 8px;">
+                         <input type="checkbox" id="captionKaraokeCheck" style="width: 18px; height: 18px;" checked>
+                         <label for="captionKaraokeCheck" style="font-weight: bold; color: #fff; cursor: pointer; flex-grow:1;">🎤 TikTok Karaoke Highlight</label>
+                         <p class="upload-copy" style="margin: 0;">(Auto-Sync Word Colors)</p>
+                     </div>
+                     <div style="display:flex; align-items:center; gap: 8px;">
+                         <input type="checkbox" id="captionBrollCheck" style="width: 18px; height: 18px;">
+                         <label for="captionBrollCheck" style="font-weight: bold; color: #fff; cursor: pointer; flex-grow:1;">🎬 Auto B-Roll Interstitials</label>
+                         <p class="upload-copy" style="margin: 0;">(Flash Stock Photos on matched words)</p>
+                     </div>
+                     <div style="display:flex; align-items:center; gap: 8px;">
+                         <input type="checkbox" id="captionSfxCheck" style="width: 18px; height: 18px;">
+                         <label for="captionSfxCheck" style="font-weight: bold; color: #fff; cursor: pointer; flex-grow:1;">🔊 Reactive Sound Effects</label>
+                         <p class="upload-copy" style="margin: 0;">(Triggers Whoosh/Pop SFX randomly on focus)</p>
+                     </div>
+                     <div style="display:flex; align-items:center; gap: 8px;">
+                         <input type="checkbox" id="captionProgressBarCheck" style="width: 18px; height: 18px;" checked>
+                         <label for="captionProgressBarCheck" style="font-weight: bold; color: #fff; cursor: pointer; flex-grow:1;">⏱️ Viewer Retention Progress Bar</label>
+                         <p class="upload-copy" style="margin: 0;">(Draws playhead filling screen bottom)</p>
+                     </div>
+                     <div style="display:flex; align-items:center; gap: 8px; margin-top:4px;">
+                         <input type="checkbox" id="captionBgMusicCheck" style="width: 18px; height: 18px;" checked>
+                         <label for="bgMusicInput" style="font-weight: bold; color: #fff; cursor: pointer;">🎵 Smart Audio Ducking Track:</label>
+                         <input type="file" id="bgMusicInput" accept="audio/*" style="font-size: 0.8rem; color: #ccc;">
+                         <audio id="bgMusicAudio" loop crossorigin="anonymous"></audio>
+                     </div>
+                     <div style="display:flex; align-items:center; gap: 8px; margin-top:4px;">
+                         <input type="checkbox" id="captionWatermarkCheck" style="width: 18px; height: 18px;" checked>
+                         <label for="captionWatermarkInput" style="font-weight: bold; color: #fff; cursor: pointer;">🛡️ Brand Watermark Overlay (PNG):</label>
+                         <input type="file" id="captionWatermarkInput" accept="image/png, image/jpeg" style="font-size: 0.8rem; color: #ccc;">
+                     </div>
+                </div>
+
+                <div style="display:flex; gap: 10px; margin-bottom: 12px;">
+                    <div style="flex:1;">
+                        <span class="style-label" style="color:#aaa;">Visual Master Theme</span>
+                        <select id="captionStyleSelect" class="theme-select text-style-select" style="margin-top:4px;">
+                           <option value="tiktok" selected>Viral Pop (Bold & Shadow)</option>
+                           <option value="classic">Classic TV (White & Black Box)</option>
+                           <option value="cinematic">Cinematic Fade (Clean White)</option>
+                           <option value="neon">Cyberpunk Neon (Intense Glow)</option>
+                           <option value="glitch">Digital Glitch (RGB Tremor)</option>
+                           <option value="typewriter">Typewriter (Sequential Reveal)</option>
+                           <option value="vaporwave">Vaporwave (Trailing Pink/Blue)</option>
+                           <option value="retro">Arcade Retro (Blocky & Snappy)</option>
+                        </select>
+                    </div>
+                    <div style="flex:1;">
+                        <span class="style-label" style="color:#aaa;">Background Video Filter</span>
+                        <select id="captionFilterSelect" class="theme-select text-style-select" style="margin-top:4px;">
+                           <option value="none" selected>None (Raw Input)</option>
+                           <option value="darken">Darken 50% (Makes Text Pop)</option>
+                           <option value="blur">Heavy Depth Blur</option>
+                           <option value="grayscale">Black & White Grayscale</option>
+                           <option value="sepia">Vintage Sepia Tone</option>
+                           <option value="invert">Inverted Nightmare Mode</option>
+                        </select>
+                    </div>
+                    <div style="flex:1;">
+                        <span class="style-label" style="color:#aaa;">Font Typography</span>
+                        <select id="captionFontSelect" class="theme-select text-style-select" style="margin-top:4px;">
+                           <option value="Nunito, sans-serif" selected>Modern (Nunito)</option>
+                           <option value="Impact, sans-serif">Bold Heavy (Impact)</option>
+                           <option value="'Courier New', monospace">Mechanical (Courier)</option>
+                           <option value="'Comic Sans MS', cursive">Playful (Comic)</option>
+                           <option value="Georgia, serif">Elegant (Georgia)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="display-style-grid" style="gap: 8px; margin-bottom: 12px; display: grid; grid-template-columns: 1fr 1fr;">
+                   <label class="style-field">
+                      <span class="style-label">Engine Text Size Scale</span>
+                      <input type="range" id="captionSizeSlider" min="30" max="150" value="80">
+                   </label>
+                   <label class="style-field">
+                      <span class="style-label">Line Spacing Gap</span>
+                      <input type="range" id="captionGapSlider" min="80" max="200" value="120">
+                   </label>
+                   <label class="style-field">
+                      <span class="style-label">Max Width Bound</span>
+                      <input type="range" id="captionWidthSlider" min="30" max="95" value="85">
+                   </label>
+                   <label class="style-field">
+                      <span class="style-label" style="color:#ffcc00; font-weight:bold;">Timing Sync Offset (ms)</span>
+                      <input type="range" id="captionSyncSlider" min="-1500" max="1500" value="0">
+                   </label>
+                   <label class="style-field">
+                      <span class="style-label">Stroke Thickness</span>
+                      <input type="range" id="captionStrokeSlider" min="0" max="100" value="80">
+                   </label>
+                </div>
+                
+                <div style="display:flex; gap: 10px; align-items:center;">
+                    <span class="style-label" style="color:#aaa;">Extracted Text Color:</span>
+                    <input type="color" id="captionColorPicker" value="#fde047" style="border:none; cursor:pointer; background:none; height:30px; width:40px;">
+                    <p class="upload-copy" style="margin: 0; margin-left:auto;"><strong>Position:</strong> Click & drag video to move captions!</p>
+                </div>
+             </div>
+
+             <div id="captionProgress" class="progress-indicator hidden" role="status" style="margin-top:1rem;">
+                 <p id="captionStatusText" class="upload-copy" style="margin-bottom: 0;">Ready.</p>
+             </div>
+
+             <div id="captionVideoContainer" class="hidden" style="margin-top: 1.5rem; border-radius: 8px; overflow: hidden; background: #000; position: relative;">
+                <canvas id="captionRenderCanvas" style="width: 100%; height: auto; display: block;"></canvas>
+                
+                <div class="toolbar toolbar-compact" id="captionVideoControls" style="background: rgba(0,0,0,0.6); padding: 8px; display: flex; align-items: center; justify-content: space-between;">
+                   <button id="captionPlayPauseBtn" class="ghost-btn" type="button" style="color:white; border-color: rgba(255,255,255,0.2);">⏸️ Pause</button>
+                   <input type="range" id="captionSeekSlider" style="flex-grow: 1; margin: 0 1rem;" min="0" max="100" value="0">
+                   <span id="captionTimeDisplay" style="color:#ddd; font-family: monospace; font-size: 0.9rem;">00:00 / 00:00</span>
+                </div>
+                <video id="captionSourceVideo" hidden playsinline crossorigin="anonymous"></video>
+             </div>
+          </div>
+          
+          <div id="captionEditorPanel" class="tool-card hidden" style="margin-top: 1rem;">
+             <div class="tool-card-head">
+                 <span class="module-icon">EDT</span>
+                 <p class="tool-card-title">Edit Auto-Captions</p>
+             </div>
+             <p class="upload-copy">If the AI missed a word, correct it below and it will instantly update on the video.</p>
+             <div id="captionList" style="max-height: 250px; overflow-y: auto; padding-right: 8px;"></div>
+          </div>
+        </div>
+      </details>
+
+      <details class="section-card" id="mediaSection">
+        <summary class="section-summary">
+            <span class="summary-head">
+              <span class="section-icon">IMG</span>
+              <span class="summary-copy">
+                <span class="section-title">Optional Media</span>
+                <span class="section-meta">Upload images, turn on the default intro clip, and manage multiple stage videos for the blue screen.</span>
+              </span>
+            </span>
+        </summary>
+        <div class="section-content">
+          <div class="upload-block">
+            <label class="field-label" for="introClipEnabled">Default Intro Clip</label>
+            <p class="upload-copy">The provided intro clip can play first on the screen before the lesson starts. Leave it on by default, or turn it off when you want the lesson to begin immediately.</p>
+            <label class="toggle-check" for="introClipEnabled">
+                <input id="introClipEnabled" type="checkbox">
+              <span>Play the default intro clip before the lesson</span>
+            </label>
+            <p id="introClipStatus" class="upload-copy">The default intro clip is ready.</p>
+          </div>
+
+          <div class="upload-block">
+            <label class="field-label">Pro Capabilities (Automated Cinematic Overlays)</label>
+            <p class="upload-copy">Enable or disable the advanced dynamic rendering features applied to your exported videos.</p>
+            <label class="toggle-check" for="proCaptionsEnabled">
+              <input id="proCaptionsEnabled" type="checkbox" checked>
+              <span>Enable TikTok-Style Animated Captions</span>
+            </label>
+            <label class="toggle-check" for="proAnimationsEnabled">
+              <input id="proAnimationsEnabled" type="checkbox" checked>
+              <span>Enable Auto-Math & Interactive Screen Scanning Animations</span>
+            </label>
+            <label class="toggle-check" for="proQuizEnabled">
+              <input id="proQuizEnabled" type="checkbox" checked>
+              <span>Enable Auto-Quiz Popups</span>
+            </label>
+            <label class="toggle-check" for="proDuckingEnabled">
+              <input id="proDuckingEnabled" type="checkbox" checked>
+              <span>Enable Audio Ducking (Lower music volume when Anjali speaks)</span>
+            </label>
+          </div>
+
+          <div class="media-upload-grid">
+            <div class="upload-block">
+              <label class="field-label" for="imageInput">Upload Multiple Images</label>
+              <p class="upload-copy">Upload up to 12 images. Each image card on this input screen includes `Remove BG`, `Restore`, and `Show Here` actions so you can prepare it before presenting.</p>
+              <input id="imageInput" class="image-input" type="file" accept="image/*" multiple>
+              <p id="imageCutoutStatus" class="upload-copy">Smart cutout is ready for new image uploads.</p>
+              <div id="imagePreviewList" class="image-preview-list hidden" aria-live="polite"></div>
+            </div>
+            <div class="upload-block">
+              <label class="field-label" for="videoInput">Upload Stage Videos</label>
+              <p class="upload-copy">Upload multiple videos for the blue screen. Each video card on this input screen includes `Remove BG`, `Restore`, and `Show On Screen` actions. Video exports automatically upscale to at least 2K while a stage video is active.</p>
+              <input id="videoInput" class="image-input" type="file" accept="video/*" multiple>
+              <div class="toolbar toolbar-compact">
+                <button id="clearVideoBtn" class="ghost-btn" type="button">Clear Videos</button>
+              </div>
+              <video id="videoPreview" class="audio-preview hidden" controls preload="metadata" muted playsinline></video>
+              <div id="videoPreviewList" class="image-preview-list hidden" aria-live="polite"></div>
+              <p id="videoStatus" class="upload-copy">No stage video selected.</p>
+            </div>
+          </div>
+
+          <div class="upload-block cutout-controls-card">
+            <label class="field-label" for="cutoutToleranceInput">Smart Cutout Match</label>
+            <p class="upload-copy">Tune background removal for both images and videos so the edges sit better on the blue screen. Lower values protect subjects more. Higher values remove more background.</p>
+            <div class="cutout-control-grid">
+              <label class="cutout-control" for="cutoutToleranceInput">
+                <span class="cutout-control-head">
+                  <span>Tolerance</span>
+                  <strong id="cutoutToleranceValue">66</strong>
+                </span>
+                <input id="cutoutToleranceInput" type="range" min="20" max="110" step="1" value="66">
+                <small>How aggressively the remover follows the background color.</small>
+              </label>
+              <label class="cutout-control" for="cutoutFeatherInput">
+                <span class="cutout-control-head">
+                  <span>Feather</span>
+                  <strong id="cutoutFeatherValue">22</strong>
+                </span>
+                <input id="cutoutFeatherInput" type="range" min="4" max="48" step="1" value="22">
+                <small>Softens the edge after removing the background.</small>
+              </label>
+              <label class="cutout-control" for="cutoutSpillInput">
+                <span class="cutout-control-head">
+                  <span>Spill Cleanup</span>
+                  <strong id="cutoutSpillValue">35</strong>
+                </span>
+                <input id="cutoutSpillInput" type="range" min="0" max="100" step="1" value="35">
+                <small>Pulls green spill away from the subject edge.</small>
+              </label>
+              <label class="cutout-control" for="cutoutScreenBlendInput">
+                <span class="cutout-control-head">
+                  <span>Screen Match</span>
+                  <strong id="cutoutScreenBlendValue">28</strong>
+                </span>
+                <input id="cutoutScreenBlendInput" type="range" min="0" max="100" step="1" value="28">
+                <small>Adds a soft blue-screen blend so the media matches the stage better.</small>
+              </label>
+            </div>
+            <p id="cutoutControlsStatus" class="upload-copy">These controls apply to both image and video background removal.</p>
+          </div>
+        </div>
+      </details>
+
+      <details class="section-card" id="narrationSection">
+        <summary class="section-summary">
+          <span class="summary-head">
+            <span class="section-icon">REC</span>
+            <span class="summary-copy">
+              <span class="section-title">Narration Audio</span>
+              <span class="section-meta">Upload, record, or generate Anjali narration.</span>
+            </span>
+          </span>
+        </summary>
+        <div class="section-content">
+          <div class="upload-block">
+            <label class="field-label" for="audioInput">Optional narration audio</label>
+            <p class="upload-copy">You can skip this. Upload audio or record narration here if you want the downloaded video to include sound.</p>
+            <input id="audioInput" class="image-input" type="file" accept="audio/*">
+            <div class="toolbar toolbar-compact">
+              <button id="recordBtn" class="primary-btn" type="button">Record Narration</button>
+              <button id="stopRecordBtn" class="ghost-btn" type="button" disabled>Stop Recording</button>
+              <button id="clearAudioBtn" class="ghost-btn" type="button">Clear Audio</button>
+            </div>
+            <audio id="audioPreview" class="audio-preview hidden" controls preload="metadata"></audio>
+            <p class="upload-copy" id="audioStatus">No narration audio selected.</p>
+            <div class="toolbar toolbar-compact">
+              <button id="loadAnjaliNarrationBtn" class="primary-btn" type="button">Generate Anjali Narration</button>
+              <button id="downloadAnjaliBtn" class="ghost-btn" type="button">Download Anjali Narration</button>
+            </div>
+            <div id="narrationLiveIndicator" class="progress-indicator narration-live-indicator hidden" role="status" aria-live="polite">
+              <div class="progress-track">
+                <span id="narrationLiveProgressFill" class="progress-fill narration-live-progress-fill"></span>
+              </div>
+              <p class="upload-copy narration-live-progress-label" id="narrationLiveProgressLabel">Anjali narration is preparing...</p>
+            </div>
+            <p class="upload-copy" id="narrationGenStatus">Enter text, then generate Anjali narration directly into the app or download the Anjali narration file.</p>
+          </div>
+        </div>
+      </details>
+
+    </section>
+
+    <section class="panel panel-stage hidden" id="stagePanel">
+      <div class="stage-actions">
+        <details class="stage-toolbar-group stage-toolbar-primary stage-toolbar-card">
+          <summary class="stage-toolbar-head stage-toolbar-summary">
+            <div>
+              <p class="stage-toolbar-label">Playback</p>
+              <p class="stage-toolbar-meta">Open, play, stop, and add slide images</p>
+            </div>
+            <span class="stage-toolbar-badge">PLAY</span>
+          </summary>
+          <div class="stage-toolbar-body">
+            <div class="stage-toolbar-buttons stage-toolbar-buttons-compact">
+              <button id="editBtn" class="ghost-btn stage-icon-btn" type="button" aria-label="Back to input" title="Back to input"><span aria-hidden="true">&larr;</span></button>
+              <button id="playBtn" class="primary-btn stage-icon-btn stage-icon-btn-primary" type="button" aria-label="Play slide" title="Play slide"><span aria-hidden="true">&#9654;</span></button>
+              <span id="playbackPercentIndicator" class="control-indicator playback-percent-indicator" title="Playback progress" aria-live="polite">0%</span>
+              <button id="pauseStageBtn" class="ghost-btn stage-icon-btn hidden" type="button" disabled aria-label="Pause" title="Pause"><span aria-hidden="true">&#10074;&#10074;</span></button>
+              <button id="stopStageBtn" class="ghost-btn stage-icon-btn" type="button" aria-label="Stop" title="Stop"><span aria-hidden="true">&#9632;</span></button>
+              <button id="stageImageUploadBtn" class="ghost-btn stage-icon-btn" type="button" aria-label="Upload images" title="Upload images"><span aria-hidden="true">IMG</span></button>
+              <button id="stageVideoUploadBtn" class="ghost-btn stage-icon-btn" type="button" aria-label="Upload video" title="Upload video"><span aria-hidden="true">VID</span></button>
+            </div>
+            <div class="stage-playback-controls">
+              <label class="stage-speed-field stage-speed-field-inline" for="stagePlaybackSpeedSelect">
+                <span class="style-label">Screen Speed</span>
+                <select id="stagePlaybackSpeedSelect" class="theme-select text-style-select stage-speed-select" aria-label="Choose screen playback speed">
+                  <option value="0.5">0.5x</option>
+                  <option value="0.75">0.75x</option>
+                  <option value="0.85">0.85x</option>
+                  <option value="0.9">0.9x</option>
+                  <option value="1" selected>1x</option>
+                </select>
+              </label>
+              <p class="stage-speed-copy">Slows narration only. Anjali pitch stays natural.</p>
+            </div>
+            <div class="stage-media-tools" aria-label="Stage media tools">
+              <button id="stageImageCutoutBtn" class="ghost-btn stage-icon-btn" type="button" disabled aria-label="Remove image background" title="Remove image background"><span aria-hidden="true">IMG-</span></button>
+              <button id="stageImageRestoreBtn" class="ghost-btn stage-icon-btn" type="button" disabled aria-label="Restore image" title="Restore image"><span aria-hidden="true">IMG+</span></button>
+              <button id="stageVideoCutoutBtn" class="ghost-btn stage-icon-btn" type="button" disabled aria-label="Remove video background" title="Remove video background"><span aria-hidden="true">VID-</span></button>
+              <button id="stageVideoRestoreBtn" class="ghost-btn stage-icon-btn" type="button" disabled aria-label="Restore video" title="Restore video"><span aria-hidden="true">VID+</span></button>
+            </div>
+          </div>
+        </details>
+
+        <details class="stage-toolbar-group stage-toolbar-card">
+          <summary class="stage-toolbar-head stage-toolbar-summary">
+            <div>
+              <p class="stage-toolbar-label">Pages</p>
+              <p class="stage-toolbar-meta">Move through the full presentation</p>
+            </div>
+            <span class="stage-toolbar-badge">NAV</span>
+          </summary>
+          <div class="stage-toolbar-body">
+            <div class="stage-page-actions" aria-label="Stage page navigation">
+              <button id="prevPageBtn" class="ghost-btn stage-icon-btn" type="button" aria-label="Previous page" title="Previous page"><span aria-hidden="true">&#8249;</span></button>
+              <span id="pageIndicator" class="page-indicator">Page 1 / 1</span>
+              <button id="nextPageBtn" class="ghost-btn stage-icon-btn" type="button" aria-label="Next page" title="Next page"><span aria-hidden="true">&#8250;</span></button>
+            </div>
+          </div>
+        </details>
+
+        <details class="stage-toolbar-group stage-toolbar-card">
+          <summary class="stage-toolbar-head stage-toolbar-summary">
+            <div>
+              <p class="stage-toolbar-label">Media</p>
+              <p class="stage-toolbar-meta">Manage uploaded images and videos from the presentation screen</p>
+            </div>
+            <span class="stage-toolbar-badge">MEDIA</span>
+          </summary>
+          <div class="stage-toolbar-body">
+            <div class="stage-media-manager">
+              <div class="stage-media-actions">
+                <button id="stageAutoTeachBtn" class="flat-btn" type="button" title="Analyze image with local Vision AI" style="margin-right: 8px;">✨ Auto-Teach</button>
+                <button id="stageAutoBRollBtn" class="flat-btn" type="button" title="Automatically fetch cinematic B-Roll based on the lesson script" style="margin-right: 8px;">🎬 Auto B-Roll</button>
+                <button id="stageRemoveImageBtn" class="ghost-btn stage-icon-btn" type="button" aria-label="Remove selected image" title="Remove selected image"><span aria-hidden="true">IMGX</span></button>
+                <button id="stageClearImagesBtn" class="ghost-btn stage-icon-btn" type="button" aria-label="Remove all images" title="Remove all images"><span aria-hidden="true">ALL</span></button>
+                <button id="stageRemoveVideoBtn" class="ghost-btn stage-icon-btn" type="button" aria-label="Remove active video" title="Remove active video"><span aria-hidden="true">VIDX</span></button>
+              </div>
+              <p id="stageMediaStatus" class="stage-toolbar-meta">Select an image or video on the screen, then manage it here.</p>
+            </div>
+          </div>
+        </details>
+
+        <details id="stageViewCard" class="stage-toolbar-group stage-toolbar-card">
+          <summary class="stage-toolbar-head stage-toolbar-summary">
+            <div>
+              <p class="stage-toolbar-label">Zoom And Font</p>
+              <p class="stage-toolbar-meta">Use Zoom +, Zoom -, Font +, and Font - on the presentation screen</p>
+            </div>
+            <span class="stage-toolbar-badge">VIEW</span>
+          </summary>
+          <div class="stage-toolbar-body">
+            <div class="stage-view-actions" aria-label="Stage zoom and font controls">
+              <button id="zoomOutBtn" class="ghost-btn stage-icon-btn" type="button" aria-label="Zoom out" title="Zoom out"><span aria-hidden="true">Z-</span></button>
+              <span id="zoomValue" class="control-indicator">100%</span>
+              <button id="zoomInBtn" class="ghost-btn stage-icon-btn" type="button" aria-label="Zoom in" title="Zoom in"><span aria-hidden="true">Z+</span></button>
+              <button id="fontDecreaseBtn" class="ghost-btn stage-icon-btn" type="button" aria-label="Decrease font" title="Decrease font"><span aria-hidden="true">F-</span></button>
+              <span id="fontValue" class="control-indicator">100%</span>
+              <button id="fontIncreaseBtn" class="ghost-btn stage-icon-btn" type="button" aria-label="Increase font" title="Increase font"><span aria-hidden="true">F+</span></button>
+            </div>
+          </div>
+        </details>
+
+        <details class="stage-toolbar-group stage-toolbar-export stage-toolbar-card">
+          <summary class="stage-toolbar-head stage-toolbar-summary">
+            <div>
+              <p class="stage-toolbar-label">Export And Format</p>
+              <p class="stage-toolbar-meta">Export the video and keep the slide styled correctly</p>
+            </div>
+            <span class="stage-toolbar-badge">SAVE</span>
+          </summary>
+          <div class="stage-toolbar-body">
+            <div class="stage-toolbar-buttons stage-toolbar-buttons-stack">
+              <button id="downloadBtn" class="accent-btn stage-download-btn" type="button">&#8681; Export Video</button>
+              <button id="downloadPdfContextBtn" class="primary-btn stage-download-btn hidden" type="button">&#8681; Export PDF Context</button>
+              <div class="stage-style-actions" aria-label="Quick stage text style">
+                <button id="stageBoldBtn" class="ghost-btn toggle-btn stage-icon-btn" type="button" aria-pressed="false" aria-label="Bold" title="Bold"><span aria-hidden="true">B</span></button>
+                <button id="stageItalicBtn" class="ghost-btn toggle-btn stage-icon-btn" type="button" aria-pressed="false" aria-label="Italic" title="Italic"><span aria-hidden="true">I</span></button>
+                <button id="stageUnderlineBtn" class="ghost-btn toggle-btn stage-icon-btn" type="button" aria-pressed="false" aria-label="Underline" title="Underline"><span aria-hidden="true">U</span></button>
+              </div>
+            </div>
+          </div>
+        </details>
+      </div>
+
+      <div id="stageTimelineCard" class="stage-timeline-card hidden">
+        <div class="stage-toolbar-head">
+          <div>
+            <p class="stage-toolbar-label">Timeline</p>
+            <p id="stageTimelineMeta" class="stage-toolbar-meta">Timeline controls appear when a PDF presentation is on screen.</p>
+          </div>
+          <span id="stageModeBadge" class="stage-toolbar-badge">LESSON</span>
+        </div>
+        <div class="stage-timeline-row">
+          <button id="seekBackwardBtn" class="ghost-btn" type="button" disabled>Back 5s</button>
+          <span id="stageCurrentTime" class="control-indicator">00:00</span>
+          <input id="stageTimelineInput" class="stage-timeline-input" type="range" min="0" max="0" value="0" step="100" disabled aria-label="PDF presentation timeline">
+          <span id="stageDuration" class="control-indicator">00:00</span>
+          <button id="seekForwardBtn" class="ghost-btn" type="button" disabled>Forward 5s</button>
+          <label class="stage-speed-field" for="playbackSpeedSelect">
+            <span class="style-label">Speed</span>
+            <select id="playbackSpeedSelect" class="theme-select text-style-select stage-speed-select" aria-label="Choose playback speed">
+              <option value="0.5">0.5x</option>
+              <option value="0.75">0.75x</option>
+              <option value="0.85">0.85x</option>
+              <option value="0.9">0.9x</option>
+              <option value="1" selected>1x</option>
+            </select>
+          </label>
+        </div>
+      </div>
+
+      <div class="stage-frame">
+        <canvas id="previewCanvas" width="1280" height="720" aria-label="Maths Teacher preview"></canvas>
+      </div>
+
+      <p class="note" id="statusText">
+        Enter maths content and play the narration. Export Video saves the animated teaching scene as an `.mp4` file.
+      </p>
+      <p class="note note-soft">
+        Long lessons are split into clean pages automatically. Longer input still takes longer to download because the export follows the full narration and typing time for every page.
+      </p>
+    </section>
+  </main>
+
+  <div id="taskPercentIndicator" class="control-indicator playback-percent-indicator app-task-percent-indicator hidden" aria-live="polite">0%</div>
+  <img id="stageLogoImage" class="hidden" alt="Info kids logo">
+  <script>
+    (function enableLiveReload() {
+      if (!/^https?:$/i.test(window.location.protocol)) {
+        return;
+      }
+
+      let lastRevision = "";
+      let pollTimer = 0;
+
+      async function poll() {
+        try {
+          const response = await fetch("__live-reload?ts=" + Date.now(), { cache: "no-store" });
+          if (!response.ok) {
+            throw new Error("Live reload endpoint is unavailable.");
+          }
+
+          const payload = await response.json();
+          const revision = String(payload && payload.revision || "");
+          if (lastRevision && revision && revision !== lastRevision) {
+            window.location.reload();
+            return;
+          }
+
+          lastRevision = revision;
+        } catch (error) {
+          console.debug("Live reload polling skipped for now.", error);
+        } finally {
+          pollTimer = window.setTimeout(poll, 1400);
+        }
+      }
+
+      window.addEventListener("beforeunload", () => {
+        if (pollTimer) {
+          window.clearTimeout(pollTimer);
+        }
+      });
+
+      poll();
+    }());
+
+    (function loadLatestScripts() {
+      const cacheToken = Date.now().toString();
+
+      function appendScript(src) {
+        return new Promise((resolve, reject) => {
+          const script = document.createElement("script");
+          script.src = src + "?v=" + cacheToken;
+          script.onload = resolve;
+          script.onerror = reject;
+          document.body.appendChild(script);
+        });
+      }
+
+      appendScript("logo-data.js")
+        .then(() => appendScript("script.js"))
+        .catch((error) => {
+          console.error("Could not load the latest application files.", error);
+          const status = document.getElementById("statusText");
+          if (status) {
+            status.textContent = "The latest app files could not load. Close this tab and open the page again.";
+          }
+        });
+    }());
+  </script>
+<script src='caption-script.js' type='module'></script>
+</body>
+</html>
