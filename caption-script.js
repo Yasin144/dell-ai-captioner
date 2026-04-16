@@ -321,12 +321,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 captionWorker = new Worker('caption-worker.js', { type: 'module' });
                 captionWorker.onmessage = (e) => {
                     const msg = e.data;
-                    if (msg.type === 'progress') {
-                        if (msg.data.status === 'downloading') statusText.innerHTML = `Downloading engine: ${Math.round(msg.data.progress || 0)}%`;
-                        else if (msg.data.status === 'ready') statusText.innerHTML = "AI engine initialized.";
+                    if (msg.type === 'progress' && msg.data) {
+                        if (msg.data.status === 'progress' && msg.data.progress !== undefined) {
+                            statusText.innerHTML = `Downloading Engine: ${Math.round(msg.data.progress)}%`;
+                        } else if (msg.data.status === 'init') {
+                            statusText.innerHTML = `Initializing AI Engine...`;
+                        }
                     } else if (msg.type === 'chunk_progress') {
-                        if (msg.chunk.timestamp && msg.chunk.timestamp[1] !== null) {
-                            let pct = Math.min(Math.round((msg.chunk.timestamp[1] / msg.duration) * 100), 99);
+                        if (msg.chunk && msg.chunk.timestamp && msg.duration) {
+                            let end = msg.chunk.timestamp[1] || msg.duration;
+                            let pct = Math.min(Math.round((end / msg.duration) * 100), 99);
                             statusText.innerHTML = `Transcribing Audio to Text... ${pct}%`;
                         }
                     }
