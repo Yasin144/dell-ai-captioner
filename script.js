@@ -11414,6 +11414,27 @@ function drawCinematicCaptions() {
 
   const chunk = timeline.slice(chunkStart, chunkEnd + 1);
 
+  const fullText = chunk.map(word => word.text.replace(/[\[\]]/g, '')).join(' ');
+  const localActiveIndex = (activeIndex >= chunkStart && activeIndex <= chunkEnd) ? activeIndex - chunkStart : -1;
+  const elapsed = Math.max(0, (currentMs - chunk[0].startMs) / 1000);
+
+  if (window.drawPremiumCaption) {
+      let styleType = window.getCaptionStylePref ? window.getCaptionStylePref() : 'tiktok';
+      let targetEmoji = window.getCaptionEmoji ? window.getCaptionEmoji(fullText) : null;
+      let fontSize = window.getCaptionFontSize ? window.getCaptionFontSize() : 64;
+      let colorOverride = window.getCaptionColor ? window.getCaptionColor() : null;
+      let lineHeight = fontSize * 1.2;
+      
+      ctx.save();
+      window.drawPremiumCaption(
+          ctx, fullText, canvas.width * 0.5, canvas.height - Math.max(100, fontSize), canvas.width * 0.85, 
+          lineHeight, elapsed, styleType, localActiveIndex, targetEmoji, fontSize, colorOverride
+      );
+      ctx.restore();
+      return;
+  }
+
+  // Basic fallback
   ctx.save();
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
@@ -11439,23 +11460,17 @@ function drawCinematicCaptions() {
      const wordY = yBase + (isSpoken ? -8 : 0); 
      
      ctx.font = isSpoken ? '900 74px "Nunito", sans-serif' : '900 64px "Nunito", sans-serif';
-     
      ctx.strokeStyle = "rgba(0,0,0,0.85)";
      ctx.lineWidth = 14;
      ctx.lineJoin = "round";
      ctx.strokeText(wordText, wordCenterX, wordY);
-     
      ctx.fillStyle = isSpoken ? "#ffcc00" : "#ffffff";
-     
      ctx.shadowColor = "rgba(0,0,0,0.6)";
      ctx.shadowBlur = 12;
      ctx.shadowOffsetY = 4;
-     
      ctx.fillText(wordText, wordCenterX, wordY);
-     
      ctx.shadowBlur = 0;
      ctx.shadowColor = "transparent";
-     
      cursorX += wWidth;
   }
   ctx.restore();
